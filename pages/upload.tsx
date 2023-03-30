@@ -7,6 +7,7 @@ import useAuthStore from "../store/authStore";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { BASE_URL } from "../utils";
+import { MdDelete } from "react-icons/md";
 
 const Upload = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -68,9 +69,16 @@ const Upload = () => {
     }
   };
 
+  const handleDiscard = () => {
+    setSavingPost(false);
+    setVideoAsset(undefined);
+    setCaption("");
+    setCategory("");
+  };
+
   return (
-    <div className="absolute flex w-full h-full justify-center left-0 top-[60px] mb-10 pt-10 lg:pt-20 bg-[#F8F8F8]">
-      <div className="flex flex-wrap items-center justify-between gap-6 p-14 pt-6 bg-white rounded-lg xl:h-[80vh] w-[60%]">
+    <div className="absolute flex w-full h-full justify-center left-0 top-[60px] mb-10 pt-10 lg:pt-20 lg:top-[70px] bg-[#F8F8F8]">
+      <div className="flex flex-wrap items-center justify-between gap-6 p-14 pt-6 bg-white rounded-lg xl:h-[85vh] w-[60%]">
         <div>
           <div>
             <p className="text-2xl font-bold">Upload Video</p>
@@ -81,17 +89,29 @@ const Upload = () => {
 
           <div className="flex flex-col items-center justify-center border-dashed border-gray-200 border-4 rounded-xl outline-none mt-10 w-[260px] h-[460px] p-10 hover:border-red-300 hover:bg-gray-100 cursor-pointer">
             {isLoading ? (
-              <p>Uploading...</p>
+              <p className="text-3xl text-center text-red-400 font-semibold">
+                Uploading...
+              </p>
             ) : (
               <div>
                 {videoAsset ? (
-                  <div>
+                  <div className="flex flex-col gap-6 items-center justify-center p-4 rounded-3xl w-[300px]">
                     <video
                       src={videoAsset.url}
                       loop
                       controls
-                      className="mt-16 bg-black rounded-xl h-[450px]"
-                    ></video>
+                      className="bg-black rounded-xl h-[462px] mt-16"
+                    />
+                    <div className="flex justify-between gap-20 items-center pb-1">
+                      <p className="text-base">{videoAsset.originalFilename}</p>
+                      <button
+                        type="button"
+                        className=" rounded-full bg-gray-200 text-red-400 p-2 text-xl cursor-pointer outline-none hover:shadow-md transition-all duration-500 ease-in-out"
+                        onClick={() => setVideoAsset(undefined)}
+                      >
+                        <MdDelete />
+                      </button>
+                    </div>
                   </div>
                 ) : (
                   <label className="cursor-pointer">
@@ -155,7 +175,7 @@ const Upload = () => {
 
           <div className="flex gap-6 mt-10">
             <button
-              onClick={() => {}}
+              onClick={handleDiscard}
               type="button"
               className="text-base font-medium border-2 border-gray-300 rounded p-2 outline-none w-28 lg:w-44"
             >

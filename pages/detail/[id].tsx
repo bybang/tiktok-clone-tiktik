@@ -56,7 +56,7 @@ const Detail = ({ postDetails }: IProps) => {
     }
   };
 
-  const addComment = async (e) => {
+  const addComment = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     if (userProfile && comment) {
@@ -80,7 +80,7 @@ const Detail = ({ postDetails }: IProps) => {
       <div className="relative flex flex-2 items-center justify-center w-[1000px] bg-black lg:w-9/12">
         <div className="absolute flex gap-6 top-6 left-2 lg:left-6 z-50">
           <p onClick={() => router.back()} className="cursor-pointer">
-            <MdOutlineCancel className="text-white text-[35px]" />
+            <MdOutlineCancel className="text-white text-[35px] hover:opacity-90" />
           </p>
         </div>
 
@@ -119,11 +119,11 @@ const Detail = ({ postDetails }: IProps) => {
 
       {/* Profile */}
       <div className="relatvie w-[1000px] md:w-[900px] lg:w-[700px]">
-        <div className="mt-10 lg:mt-20">
-          <div className="flex gap-3 p-2 font-semibold rounded cursor-pointer">
+        <div className="mt-10">
+          <div className="flex gap-3 mb-4 p-2 font-semibold rounded cursor-pointer">
             <div className="ml-4 w-16 h-16 md:w-20 md:h-20">
-              <Link href="">
-                <>
+              <Link href={`/profile/${post.postedBy._id}`}>
+                <div>
                   <Image
                     src={post.postedBy.image}
                     width={62}
@@ -132,12 +132,12 @@ const Detail = ({ postDetails }: IProps) => {
                     className="rounded-full"
                     layout="responsive"
                   />
-                </>
+                </div>
               </Link>
             </div>
 
             <div>
-              <Link href="">
+              <Link href={`/profile/${post.postedBy._id}`}>
                 <div className="flex flex-col gap-2 mt-3">
                   <p className="flex items-center gap-2 font-bold text-primary md:text-base">
                     {post.postedBy.userName}{" "}
@@ -164,15 +164,13 @@ const Detail = ({ postDetails }: IProps) => {
           </div>
 
           {/* Comments */}
-          <div>
-            <Comments
-              comment={comment}
-              comments={post.comments}
-              setComment={setComment}
-              addComment={addComment}
-              isPostingComment={isPostingComment}
-            />
-          </div>
+          <Comments
+            comment={comment}
+            comments={post.comments}
+            setComment={setComment}
+            addComment={addComment}
+            isPostingComment={isPostingComment}
+          />
         </div>
       </div>
     </div>

@@ -23,14 +23,24 @@ const Home = ({ videos }: IProps) => {
 
 // It server side renders the page(NextJS will pre-render this page on each request using the data returned by `getServerSideProps` function)
 // Only use if you need to render a page that data must be fetched at request time, in TikTik, we need to fetch new videos each time we load
-export const getServerSideProps = async () => {
-  const { data } = await axios.get(`${BASE_URL}/api/post`);
+export const getServerSideProps = async ({
+  query: { topic },
+}: {
+  query: { topic: string };
+}) => {
+  let response = null;
+
+  if (topic) {
+    response = await axios.get(`${BASE_URL}/api/discover/${topic}`);
+  } else {
+    response = await axios.get(`${BASE_URL}/api/post`);
+  }
 
   // console.log("response: ", response.data.name);
 
   return {
     props: {
-      videos: data,
+      videos: response.data,
     },
   };
 };
